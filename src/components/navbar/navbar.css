@@ -1,0 +1,14 @@
+.nav-link {
+    color: #555;
+    font-weight: 500;
+  }
+  
+  .nav-link:hover {
+    color: #b92b27;
+  }
+  
+  .nav-link.active {
+    color: #b92b27;
+    border-bottom: 2px solid #b92b27;
+  }
+  
