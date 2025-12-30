@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <div>
       <h2>Home</h2>
-      <p>Welcome to the Quora-style frontend project.</p>
+      <p>Welcome to the Home Page of Quora-style frontend project.</p>
     </div>
   )
 }
