@@ -1,9 +1,11 @@
 import React from 'react'
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import storageService from '../services/storageService';
+import dummyPosts from '../data/dummyPosts';
 
 /*
   FeedContext manages app content like:
-  - posts
+  - posts 
   - spaces
   - notifications
 */
@@ -11,7 +13,13 @@ const FeedContext = createContext();
 
 export const FeedProvider = ({ children }) => {
   // Mock posts data
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(() =>
+    storageService.get("posts", dummyPosts)
+  );
+
+  useEffect(() => {
+    storageService.set("posts", posts)
+  }, [posts]);
 
   // Mock spaces data
   const [spaces, setSpaces] = useState([]);
@@ -37,6 +45,7 @@ export const FeedProvider = ({ children }) => {
     <FeedContext.Provider
       value={{
         posts,
+        setPosts,
         spaces,
         notifications,
         addPost,

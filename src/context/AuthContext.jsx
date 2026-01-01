@@ -1,5 +1,6 @@
 import React from 'react'
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import storageService from '../services/storageService';
 
 /*
   AuthContext handles user authentication state.
@@ -12,16 +13,24 @@ const AuthContext = createContext();
 */
 export const AuthProvider = ({ children }) => {
   // Logged-in user info (null means not logged in)
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() =>
+    storageService.get("user", null)
+  );
 
+  
+  useEffect(() => {
+    storageService.set("user", user);
+  }, [user]);
+  
   // Mock login function
-  const login = (userData) => {
-    setUser(userData);
-  };
+  const login = (userData) => 
+     setUser(userData);
+  
 
   // Logout user
   const logout = () => {
     setUser(null);
+    storageService.remove("user");
   };
 
   return (
