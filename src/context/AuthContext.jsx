@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { createContext, useContext, useState, useEffect } from "react";
 import storageService from '../services/storageService';
 
@@ -16,14 +16,14 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() =>
     storageService.get("user", null)
   );
-
+  const [showAuthPopup, setShowAuthPopup] = useState(false);
   
   useEffect(() => {
     storageService.set("user", user);
   }, [user]);
   
   // Mock login function
-  const login = (userData) => 
+  const login = (userData) =>  
      setUser(userData);
   
 
@@ -32,6 +32,17 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     storageService.remove("user");
   };
+    /*
+    Guard function for auth-required actions
+  */
+  const requireAuth = (action) => {
+    if (!user) {
+      setShowAuthPopup(true);
+      return;
+    }
+    action();
+  };
+
 
   return (
     <AuthContext.Provider
@@ -40,6 +51,9 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated: !!user,
         login,
         logout,
+        showAuthPopup,
+        setShowAuthPopup,
+        requireAuth
       }}
     >
       {children}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { createContext, useContext, useState, useEffect } from "react";
 import storageService from '../services/storageService';
 import dummyPosts from '../data/dummyPosts';
@@ -15,7 +15,7 @@ export const FeedProvider = ({ children }) => {
   // Mock posts data
   const [posts, setPosts] = useState(() =>
     storageService.get("posts", dummyPosts)
-  );
+  ); 
 
   useEffect(() => {
     storageService.set("posts", posts)
@@ -31,6 +31,12 @@ export const FeedProvider = ({ children }) => {
   const addPost = (newPost) => {
     setPosts((prev) => [newPost, ...prev]);
   };
+
+  // Delete post by id
+  const deletePost = (postId) => {
+    setPosts((prev) => prev.filter((post) => post.id !== postId));
+  };
+
 
   // Mark notification as read
   const markNotificationRead = (id) => {
@@ -49,6 +55,7 @@ export const FeedProvider = ({ children }) => {
         spaces,
         notifications,
         addPost,
+        deletePost,
         markNotificationRead,
       }}
     >
